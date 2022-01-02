@@ -49,7 +49,7 @@ class Model(base.Model):
     def setup_visualizer(self,opt):
         super().setup_visualizer(opt)
         # set colors for visualization
-        box_colors = ["#ff0000","#40afff","#9314ff","#ffd700","#00ff00"]
+        box_colors = ["#ffffff","#ffffff","#ffffff","#ffffff","#ffffff"]
         box_colors = list(map(util.colorcode_to_number,box_colors))
         self.box_colors = np.array(box_colors).astype(int)
         assert(len(self.box_colors)==opt.batch_size)
@@ -79,7 +79,7 @@ class Model(base.Model):
             if opt.warp.fix_first:
                 self.graph.warp_param.weight.data[0] = 0
         # after training
-        os.system("ffmpeg -y -framerate 30 -i {}/%d.png -pix_fmt yuv420p {}".format(self.vis_path,self.video_fname))
+        os.system("ffmpeg -y -framerate 30 -i {}/%d.png -pix_fmt yuv420p -crf 20 {}".format(self.vis_path,self.video_fname))
         self.save_checkpoint(opt,ep=None,it=self.it)
         if opt.tb:
             self.tb.flush()
@@ -156,7 +156,8 @@ class Model(base.Model):
         frame_GT = self.visualize_patches(opt,self.warp_pert)
         frame = self.visualize_patches(opt,self.graph.warp_param.weight)
         frame2 = self.predict_entire_image(opt)
-        frame_cat = (torch.cat([frame,frame2],dim=1)*255).byte().permute(1,2,0).numpy()
+        #frame_cat = (torch.cat([frame,frame2],dim=1)*255).byte().permute(1,2,0).numpy()
+        frame_cat = (frame2*255).byte().permute(1,2,0).numpy()
         imageio.imsave("{}/{}.png".format(self.vis_path,self.vis_it),frame_cat)
         self.vis_it += 1
         # visualize in Tensorboard

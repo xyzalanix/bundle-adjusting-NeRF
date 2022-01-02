@@ -9,12 +9,12 @@ arch:                                                       # architectural opti
 barf_c2f:                                                   # coarse-to-fine scheduling on positional encoding
 
 data:                                                       # data options
-    image_fname: data/cat.jpg                               # path to image file
-    image_size: [360,480]                                   # original image size
-    patch_crop: [180,180]                                   # crop size of image patches to align
+    image_fname: data/ttacff-152_1024.jpg                               # path to image file
+    image_size: [1024,1024]                                   # original image size
+    patch_crop: [256,256]                                   # crop size of image patches to align
 
 warp:                                                       # image warping options
-    type: homography                                        # type of warp function
+    type: homography                                        # type of warp function (homography, rigid, rotation, translation)
     dof: 8                                                  # degrees of freedom of the warp function
     noise_h: 0.1                                            # scale of pre-generated warp perturbation (homography)
     noise_t: 0.2                                            # scale of pre-generated warp perturbation (translation)
@@ -28,10 +28,11 @@ optim:                                                      # optimization optio
     lr_warp: 1.e-3                                          # learning rate of warp parameters
 
 batch_size: 5                                               # batch size (set to number of patches to consider)
-max_iter: 5000                                              # train to maximum number of iterations
+max_iter: 1000                                              # train to maximum number of iterations
 
 visdom:                                                     # Visdom options (turned off)
 
 freq:                                                       # periodic actions during training
     scalar: 20                                              # log losses and scalar states (every N iterations)
-    vis: 100                                                # visualize results (every N iterations)
+    vis: 10                                                # visualize results (every N iterations)
+

@@ -10,7 +10,7 @@ import termcolor
 import socket
 import contextlib
 from easydict import EasyDict as edict
-
+from imageio import imread
 # convert to colored strings
 def red(message,**kwargs): return termcolor.colored(str(message),color="red",attrs=[k for k,v in kwargs.items() if v is True])
 def green(message,**kwargs): return termcolor.colored(str(message),color="green",attrs=[k for k,v in kwargs.items() if v is True])
@@ -172,6 +172,7 @@ def check_socket_open(hostname,port):
 def get_layer_dims(layers):
     # return a list of tuples (k_in,k_out)
     return list(zip(layers[:-1],layers[1:]))
+    
 
 @contextlib.contextmanager
 def suppress(stdout=False,stderr=False):
